@@ -6,7 +6,7 @@ Number / := method(n,
   )
 ) 
 
-"1/0: " print
-(1/0) println
+"1/0: " print 
+(1/0) println # => 0
 "1/2: " print
-(1/2) println
+(1/2) println # => 0.5
