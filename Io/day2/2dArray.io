@@ -1,28 +1,35 @@
-List ofSize := method(n, 
+List ofSize := method(n, val, 
  arr := list()
- n repeat(arr push(0))
+ n repeat(arr push(val))
 )
 
-TwoDimensionalArray := Object clone
+TwoDimensionalArray := List clone
 
-TwoDimensionalArray addRow := method(n, 
-  (self slotNames contains("arr")) ifFalse( 
-    self setSlot("arr", list())
-  )
-  self arr push(list ofSize(n))
+TwoDimensionalArray addZeroRow := method(n, 
+  push(list ofSize(n, 0))
 )
-TwoDimensionalArray addRows := method(x,y, y repeat(addRow(x)); self)
-TwoDimensionalArray set := method(x,y,value, arr at(y) atPut(x, value); self)
-TwoDimensionalArray get := method(x,y,value, arr at(y) at(x))
-TwoDimensionalArray size := method(
+
+TwoDimensionalArray addRow := method(
+  row,
+  push(row)
+)
+
+TwoDimensionalArray addRows := method(x,y, y repeat(addZeroRow(x)); self)
+
+TwoDimensionalArray set := method(x,y,value, at(y) atPut(x, value); self)
+
+TwoDimensionalArray get := method(x,y,value, at(y) at(x))
+
+TwoDimensionalArray dimensions := method(
   m := Map clone
-  m atPut("x", arr at(0) size)
-  m atPut("y", arr size)
+  m atPut("x", at(0) size)
+  m atPut("y", size)
   m asObject
 )
+
 TwoDimensionalArray transpose := method(
-  transposed := TwoDimensionalArray clone addRows(size y, size x)
-  arr foreach(newX, row,
+  transposed := TwoDimensionalArray clone addRows(dimensions y, dimensions x)
+  foreach(newX, row,
     row foreach(newY, item,
       transposed set(newX, newY, item)
     )
@@ -30,13 +37,26 @@ TwoDimensionalArray transpose := method(
   transposed
 )
 
-TwoDimensionalArray println := method(
-  arr foreach(a,
-    "[" print
-      a foreach(item, "#{item} " interpolate print)
-    "]" println
+TwoDimensionalArray asSequence := method(
+  reduce(
+    all, 
+    line,
+    all .. (line reduce (x,y, x .. " " .. y )) .. "\n",
+    ""
   )
-  "" println
+)
+
+TwoDimensionalArray fromSequence := method(seq,
+  seq split("\n") reduce(
+    matrixToReturn,
+    line,
+    addRow( line split(" ") ),
+    clone 
+  )
+)
+
+TwoDimensionalArray println := method(
+  asSequence println
 )
 
 dim := method(x,y, 
