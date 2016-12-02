@@ -56,7 +56,7 @@ TwoDimensionalArray fromSequence := method(seq,
 )
 
 TwoDimensionalArray println := method(
-  asSequence println
+  asSequence .. "\n" print
 )
 
 dim := method(x,y, 
