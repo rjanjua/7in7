@@ -3,6 +3,9 @@ Builder := Object clone
 Builder indent := ""
 Builder deepen := method(self indent := indent .. "  ")
 Builder undeepen := method( (self indent == "") ifTrue(return) ifFalse( self indent := self indent inclusiveSlice(2)) )
+
+
+
 Builder forward := method(
 
     writeln(self indent, "<", call message name, ">");
